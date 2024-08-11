@@ -35,7 +35,7 @@ jobs:
     - name: Clone Repo
       uses: actions/checkout@main
     - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1.7.0
+      uses: aws-actions/configure-aws-credentials@v1
       with:
         role-to-assume: ${{secrets.ROLE_NAME}} 
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
