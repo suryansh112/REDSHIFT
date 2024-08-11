@@ -1,0 +1,45 @@
+name: Redshift-Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      command: 
+        description: Choose whether to apply or destroy
+        required: true
+        default: apply
+        type: choice
+        options:
+        - apply
+        - destroy
+      environments:
+        description: Choose Env
+        required: true
+        type: choice
+        default: dev
+        options:
+        - dev
+        - qa
+        - prod
+      region:
+        description: Choose Region
+        required: true
+        type: choice
+        default: us-east-1
+        options:
+        - ap-south-1
+        - us-east-1
+jobs:
+  Create_Redshift_Cluster:
+    if: inputs.command == ${{'apply' || 'destroy'}}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@main
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1.7.0
+      with:
+        role-to-assume: ${{secrets.ROLE_NAME}} 
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ inputs.region }}
+    - name: Creating RedShift Cluster
+      run: |
+           terraform ${{inputs.command}} --auto-approve
