@@ -1,0 +1,3 @@
+module "redshift"{
+    source = "./redshift"
+}
