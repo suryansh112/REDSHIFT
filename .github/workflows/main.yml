@@ -45,4 +45,6 @@ jobs:
         aws-region: ${{ inputs.region }}
     - name: Creating RedShift Cluster
       run: |
+           terraform init
+           terraform plan
            terraform ${{inputs.command}} --auto-approve
