@@ -27,6 +27,8 @@ on:
         options:
         - ap-south-1
         - us-east-1
+env:
+  ROLE_NAME : ${{secrets.ROLE_NAME}}
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read
@@ -47,10 +49,10 @@ jobs:
       run: |
            terraform init
            terraform plan
-           terraform ${{inputs.command}} --auto-approve -var="role=${{secrets.ROLE_NAME}}"
+           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME"
     - name: Destroying Redshift Cluster
       if: inputs.command == 'destroy'
       run: |
            terraform init
            terraform plan
-           terraform ${{inputs.command}} --auto-approve -var="role=${{secrets.ROLE_NAME}}"
+           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME"
