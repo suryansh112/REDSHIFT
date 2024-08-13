@@ -15,7 +15,7 @@ resource "aws_redshift_cluster" "my_cluster" {
 resource "aws_redshift_scheduled_action" "pause_cluster" {
   name     = "start-cluster"
   schedule = "cron(50 21 * * ? *)"
-  iam_role = var.role.arn
+  iam_role = var.role
 
   target_action {
     pause_cluster {
