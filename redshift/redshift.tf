@@ -18,7 +18,7 @@ resource "aws_redshift_scheduled_action" "pause_cluster" {
   iam_role = var.role
 
   target_action {
-    pause_cluster {
+    resume_cluster {
       cluster_identifier = aws_redshift_cluster.my_cluster.cluster_identifier
     }
   }
