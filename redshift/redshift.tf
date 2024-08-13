@@ -9,3 +9,17 @@ resource "aws_redshift_cluster" "my_cluster" {
   apply_immediately = "true"
   publicly_accessible = "false"
 }
+
+
+
+resource "aws_redshift_scheduled_action" "pause_cluster" {
+  name     = "start-cluster"
+  schedule = "cron(50 21 * * ? *)"
+  iam_role = vars.role
+
+  target_action {
+    pause_cluster {
+      cluster_identifier = aws_redshift_cluster.my_cluster
+    }
+  }
+}
