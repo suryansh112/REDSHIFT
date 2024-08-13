@@ -19,7 +19,7 @@ resource "aws_redshift_scheduled_action" "pause_cluster" {
 
   target_action {
     pause_cluster {
-      cluster_identifier = aws_redshift_cluster.my_cluster
+      cluster_identifier = aws_redshift_cluster.my_cluster.cluster_identifier
     }
   }
 }
