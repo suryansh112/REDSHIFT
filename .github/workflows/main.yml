@@ -48,11 +48,11 @@ jobs:
       if: inputs.command == 'apply'
       run: |
            terraform init
-           terraform plan
+           terraform plan -var="role=$ROLE_NAME"
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME"
     - name: Destroying Redshift Cluster
       if: inputs.command == 'destroy'
       run: |
            terraform init
-           terraform plan
+           terraform plan -var="role=$ROLE_NAME"
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME"
