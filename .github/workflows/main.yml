@@ -43,13 +43,13 @@ jobs:
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
         aws-region: ${{ inputs.region }}
     - name: Creating RedShift Cluster
-      if: inputs.command == ${{'apply'}}
+      if: inputs.command == 'apply'
       run: |
            terraform init
            terraform plan
            terraform ${{inputs.command}} --auto-approve
     - name: Destroying Redshift Cluster
-      if: inputs.command == ${{'destroy'}}
+      if: inputs.command == 'destroy'
       run: |
            terraform init
            terraform plan
