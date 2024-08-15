@@ -47,6 +47,7 @@ jobs:
     - name: Creating RedShift Cluster
       if: inputs.command == 'apply'
       run: |
+           pwd
            terraform init
            terraform plan -var="role=$ROLE_NAME" -var="region=${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}"
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var="region=${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}" 
