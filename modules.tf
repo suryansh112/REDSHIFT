@@ -5,4 +5,5 @@ module "redshift"{
 
 module "lambda" {
     source = "./lambda"
+    bucket = var.bucket
 }
