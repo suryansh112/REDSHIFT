@@ -55,5 +55,5 @@ jobs:
       if: inputs.command == 'destroy'
       run: |
            terraform init
-           terraform plan -var="role=$ROLE_NAME" -var="region=${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}" 
+           terraform plan -var="role=$ROLE_NAME" -var="region=${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}"
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var="${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}} -var="github_workspace=${GITHUB_WORKSPACE}"
