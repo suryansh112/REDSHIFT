@@ -3,3 +3,6 @@ module "redshift"{
     role = var.role
 }
 
+module "lambda" {
+    source = "./lambda"
+}
