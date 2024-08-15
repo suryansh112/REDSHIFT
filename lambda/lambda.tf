@@ -24,7 +24,7 @@ resource "aws_lambda_function" "my_lambda" {
   
 handler       = "lambda.handler"
   runtime = "python3.8"
-  filename      = "../lambda.zip"
+  filename      = "lambda.zip"
 
 
 
