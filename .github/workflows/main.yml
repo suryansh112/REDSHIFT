@@ -56,4 +56,4 @@ jobs:
       run: |
            terraform init
            terraform plan -var="role=$ROLE_NAME" -var="region=${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}"
-           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var="${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}
+           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var="${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}"
