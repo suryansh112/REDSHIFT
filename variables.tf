@@ -1,5 +1,6 @@
 variable "region" {
   type = string
+  sensitive = true
 
 }
 

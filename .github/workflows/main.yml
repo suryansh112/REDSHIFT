@@ -54,5 +54,5 @@ jobs:
       if: inputs.command == 'destroy'
       run: |
            terraform init
-           terraform plan -var="role=$ROLE_NAME"
-           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME"
+           terraform plan -var="role=$ROLE_NAME" -var="region=${{inputs.region}}"
+           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var="${{inputs.region}}"
