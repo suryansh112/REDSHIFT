@@ -9,5 +9,10 @@ variable "role" {
     sensitive = true
 }
 
+variable "bucket" {
+  type = string
+  sensitive = true
+}
+
 
 
