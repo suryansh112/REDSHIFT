@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "assume_role" {
+/*data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
 
@@ -33,7 +33,7 @@ handler       = "lambda.lambda_handler"
 
 
 
-}
+}*/
 
 
 resource "aws_s3_bucket_notification" "redshift-bucket-notification" {
