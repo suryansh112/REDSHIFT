@@ -28,8 +28,8 @@ resource "aws_lambda_function" "my_lambda" {
   
 handler       = "lambda.lambda_handler"
   runtime = "python3.8"
-  filename      = file("${var.github_workspace}/lambda/lambda.zip")
-  source_code_hash = filebase64sha256("${var.github_workspace}/lambda/lambda.zip")
+  filename      = data.archive_file.lambda_function_file.output_path
+  source_code_hash = data.archive_file.lambda_function_file.output_base64sha256
 
 
 
