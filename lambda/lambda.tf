@@ -16,7 +16,11 @@ resource "aws_iam_role" "iam_for_lambda" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
-
+data "archive_file" "lambda_function_file" {
+  type = "zip"
+  source_file = file("${path.root}/lambda/lambda.py")
+  output_path = "${path.root}/lambda/lambda.zip"
+}
 
 resource "aws_lambda_function" "my_lambda" {
   function_name = "pause-redshift"
