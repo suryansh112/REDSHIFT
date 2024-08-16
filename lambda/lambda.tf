@@ -18,7 +18,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 
 data "archive_file" "lambda_function_file" {
   type = "zip"
-  source_file = file("${var.github_workspace}/lambda/lambda.py")
+  source_file = "${var.github_workspace}/lambda/lambda.py"
   output_path = "${var.github_workspace}/lambda/lambda.zip"
 }
 
@@ -28,7 +28,7 @@ resource "aws_lambda_function" "my_lambda" {
   
 handler       = "lambda.lambda_handler"
   runtime = "python3.8"
-  filename      = file("${var.github_workspace}/lambda/lambda.zip")
+  filename      = "${var.github_workspace}/lambda/lambda.zip"
   source_code_hash = data.archive_file.lambda_function_file.output_base64sha256
 
 
