@@ -5,7 +5,7 @@ def lambda_handler(event, context):
     client = boto3.client('redshift')
 
     
-    cluster_identifier = 'test-redshift-cluster'
+    cluster_identifier = 'dev-redshift-cluster'
 
     try:
         
