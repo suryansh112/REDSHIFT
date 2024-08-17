@@ -30,10 +30,11 @@ on:
 env:
   ROLE_NAME : ${{secrets.ROLE_NAME}}
 permissions:
-  id-token: write   # This is required for requesting the JWT
+  id-token: write  
   contents: read
 jobs:
-  Create_Redshift_Cluster:
+  Dev_Redshift_Cluster:
+    if: inputs.environments == 'dev'
     runs-on: ubuntu-latest
     steps:
     - name: Clone Repo
@@ -49,11 +50,11 @@ jobs:
       run: |
            pwd
            terraform init
-           terraform plan -var="role=$ROLE_NAME" -var="region=${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}"
-           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var="region=${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}"
+           terraform plan -var="role=$ROLE_NAME" -var="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}"
+           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}"
     - name: Destroying Redshift Cluster
       if: inputs.command == 'destroy'
       run: |
            terraform init
-           terraform plan -var="role=$ROLE_NAME" -var="region=${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}"
-           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var="region=${{inputs.region}}" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}"
+           terraform plan -var="role=$ROLE_NAME" -var="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}"
+           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}"
