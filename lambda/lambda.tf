@@ -83,6 +83,10 @@ resource "aws_iam_policy" "lambda_policy" {
 
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
   role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = [aws_iam_policy.lambda_policy.arn,var.redshift_lambda_access]
+  policy_arn = aws_iam_policy.lambda_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
+  role       = aws_iam_role.iam_for_lambda.name
+  policy_arn = var.redshift_lambda_access
+}

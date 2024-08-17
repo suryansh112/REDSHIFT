@@ -26,4 +26,3 @@ variable "cluster_name"{
     type = string
     sensitive = false
 }
-
