@@ -70,7 +70,6 @@ resource "aws_iam_policy" "lambda_policy" {
     Statement = [
       
       {
-        effect = Allow
         Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
@@ -93,6 +92,6 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_access" {
   policy_arn = var.redshift_lambda_access
 }
 resource "aws_cloudwatch_log_group" "example" {
-  name              = "/aws/lambda/aws_lambda_function.my_lambda"
+  name              = "/aws/lambda/${aws_lambda_function.my_lambda.function_name}"
   retention_in_days = 14
 }
