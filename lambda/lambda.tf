@@ -45,7 +45,6 @@ resource "aws_s3_bucket_notification" "redshift-bucket-notification" {
     lambda_function_arn = aws_lambda_function.my_lambda.arn
     events              = ["s3:ObjectCreated:Put"]
 
-    filter_prefix = "redshift/"
   }
 }
 
