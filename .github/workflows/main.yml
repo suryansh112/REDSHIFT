@@ -49,12 +49,14 @@ jobs:
       if: inputs.command == 'apply'
       run: |
            pwd
+           terraform workspace new dev
            terraform init
            terraform plan -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
     - name: Destroying Redshift Cluster
       if: inputs.command == 'destroy'
       run: |
+           terraform workspace new dev
            terraform init
            terraform plan -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"

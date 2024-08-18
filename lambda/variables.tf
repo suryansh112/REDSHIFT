@@ -11,3 +11,10 @@ variable "redshift_lambda_access"{
     type = string
     sensitive = true
 }
+
+variable "env_function_name" {
+
+    type = string
+    sensitive = false
+  
+}

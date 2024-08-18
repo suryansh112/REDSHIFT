@@ -47,3 +47,7 @@ variable "cluster_name"{
     type = string
     sensitive = false
 }
+variable "env_function_name"{
+    type = string
+    sensitive = false
+}
