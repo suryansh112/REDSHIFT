@@ -66,8 +66,11 @@ resource "aws_iam_policy" "lambda_policy" {
 
   policy = jsonencode({
     Version = "2012-10-17",
+    
     Statement = [
+      
       {
+        effect = Allow
         Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
@@ -88,4 +91,8 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_access" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = var.redshift_lambda_access
+}
+resource "aws_cloudwatch_log_group" "example" {
+  name              = "/aws/lambda/aws_lambda_function.my_lambda"
+  retention_in_days = 14
 }
