@@ -70,7 +70,6 @@ resource "aws_iam_policy" "lambda_policy" {
     Statement = [
       
       {
-        effect = Allow
         Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
