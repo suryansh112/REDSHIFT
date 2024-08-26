@@ -27,7 +27,7 @@ resource "aws_lambda_function" "my_lambda" {
   function_name = var.env_function_name
   role          = aws_iam_role.iam_for_lambda.arn
   
-handler       = "lambda.lambda_handler"
+  handler       = "lambda_dev.lambda_handler"
   runtime = "python3.8"
   filename      = "${var.github_workspace}/lambda/lambda_${terraform.workspace}.zip"
   source_code_hash = data.archive_file.lambda_function_file.output_base64sha256
