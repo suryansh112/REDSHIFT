@@ -6,7 +6,7 @@ def lambda_handler(event, context):
     client = boto3.client('redshift')
 
     
-    cluster_identifier = os.environ.get('database_name')
+    cluster_identifier = os.environ.get('cluster_name')
 
     try:
         
