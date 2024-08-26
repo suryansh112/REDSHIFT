@@ -14,4 +14,5 @@ module "lambda" {
     github_workspace = var.github_workspace
     redshift_lambda_access = var.redshift_lambda_access
     env_function_name = var.env_function_name
+    database_name = var.database_name
 }
