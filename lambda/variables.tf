@@ -19,7 +19,7 @@ variable "env_function_name" {
   
 }
 
-variable "database_name" {
+variable "cluster_name" {
     type =  string
     sensitive = false
 }
