@@ -56,5 +56,9 @@ jobs:
       run: |
            terraform init
            terraform workspace select dev
+<<<<<<< HEAD
            terraform plan -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+=======
+           terraform plan -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+>>>>>>> a7c660c3178d1b40290996764070fe8b1625f2d0
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
