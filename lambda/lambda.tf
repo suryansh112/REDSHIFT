@@ -34,7 +34,7 @@ resource "aws_lambda_function" "my_lambda" {
 
 environment {
   variables = {
-    database_name = var.cluster_name
+    cluster_name = var.cluster_name
   }
 }
 
