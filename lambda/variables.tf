@@ -18,3 +18,8 @@ variable "env_function_name" {
     sensitive = false
   
 }
+
+variable "database_name" {
+    type =  string
+    sensitive = false
+}

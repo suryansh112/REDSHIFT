@@ -47,16 +47,14 @@ jobs:
         aws-region: ${{ inputs.region }}
     - name: Creating RedShift Cluster
       if: inputs.command == 'apply'
-      run: |
-           pwd
-           terraform init
-           terraform workspace new dev
-           terraform plan -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+      run: |    
+           terraform workspace select dev
+           terraform plan -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
     - name: Destroying Redshift Cluster
       if: inputs.command == 'destroy'
       run: |
            terraform init
-           terraform workspace new dev
-           terraform plan -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+           terraform workspace select dev
+           terraform plan -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="dev.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"

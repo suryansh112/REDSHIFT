@@ -1,11 +1,12 @@
 import boto3
+import os
 
 def lambda_handler(event, context):
 
     client = boto3.client('redshift')
 
     
-    cluster_identifier = 'dev-redshift-cluster'
+    cluster_identifier = os.environ.get('database_name')
 
     try:
         

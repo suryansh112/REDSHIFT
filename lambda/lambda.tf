@@ -16,6 +16,7 @@ resource "aws_iam_role" "iam_for_lambda" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
+
 data "archive_file" "lambda_function_file" {
   type = "zip"
   source_file = "${var.github_workspace}/lambda/lambda_${terraform.workspace}.py"
@@ -31,6 +32,11 @@ handler       = "lambda.lambda_handler"
   filename      = "${var.github_workspace}/lambda/lambda_${terraform.workspace}.zip"
   source_code_hash = data.archive_file.lambda_function_file.output_base64sha256
 
+environment {
+  variables = {
+    database_name = var.database_name
+  }
+}
 
 
 }
