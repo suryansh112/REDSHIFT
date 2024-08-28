@@ -33,10 +33,9 @@ permissions:
   id-token: write  
   contents: read
 jobs:
-  TERRAFORM_INIT_APPLY:
+  TERRAFORM_INIT_PLAN_APPLY:
     if: inputs.command == 'apply'
     runs-on: ubuntu-latest
-    environment: dev
     steps:
     - name: Clone Repo
       uses: actions/checkout@main
@@ -51,12 +50,31 @@ jobs:
            terraform init    
            terraform workspace select dev
            terraform plan -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+
+  TERRAFORM_INIT_APPLY:
+    runs-on: ubuntu-latest
+    needs: TERRAFORM_INIT_PLAN_APPLY
+    environment: 
+      name: ${{ inputs.environments }}
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@main
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{secrets.ROLE_NAME}} 
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ inputs.region }}
+    - name: Creating RedShift Cluster
+      run: |
+           terraform init    
+           terraform workspace select dev
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
     
-  TERRAFORM_INIT_DESTROY:
+    
+  TERRAFORM_INIT_PLAN_DESTROY:
     if: inputs.command == 'destroy'
     runs-on: ubuntu-latest
-    environment: dev
     steps:
     - name: Clone Repo
       uses: actions/checkout@main
@@ -72,6 +90,25 @@ jobs:
            terraform init
            terraform workspace select dev
            terraform plan -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+  TERRAFORM_INIT_DESTROY:
+    needs: TERRAFORM_INIT_PLAN_DESTROY
+    environment:
+      name: ${{ inputs.environments }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@main
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{secrets.ROLE_NAME}} 
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ inputs.region }}
+    - name: Destroying Redshift Cluster
+      if: inputs.command == 'destroy'
+      run: |
+           terraform init
+           terraform workspace select dev
            terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
     
     
