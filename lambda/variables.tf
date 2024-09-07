@@ -2,6 +2,12 @@ variable "bucket" {
     type = string
     sensitive = true
 }
+
+variable "bucket_name" {
+    type = string
+    sensitive = false
+}
+
 variable "github_workspace"{
     type =  string
     sensitive = false

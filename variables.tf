@@ -51,3 +51,10 @@ variable "env_function_name"{
     type = string
     sensitive = false
 }
+
+variable "bucket_name" {
+
+    type = string
+    sensitive = false
+}
+  

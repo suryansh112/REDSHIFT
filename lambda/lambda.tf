@@ -17,11 +17,11 @@ resource "aws_iam_role" "iam_for_lambda" {
 }
 
 
-data "archive_file" "lambda_function_file" {
+/*data "archive_file" "lambda_function_file" {
   type = "zip"
   source_file = "${var.github_workspace}/lambda/lambda_${terraform.workspace}.py"
   output_path = "${var.github_workspace}/lambda/lambda_${terraform.workspace}.zip"
-}
+}*/
 
 resource "aws_lambda_function" "my_lambda" {
   function_name = var.env_function_name
@@ -29,7 +29,10 @@ resource "aws_lambda_function" "my_lambda" {
   
   handler       = "lambda_dev.lambda_handler"
   runtime = "python3.8"
-  filename      = "${var.github_workspace}/lambda/lambda_${terraform.workspace}.zip"
+  //filename      = "${var.github_workspace}/lambda/lambda_${terraform.workspace}.zip"
+  s3_bucket = var.bucket_name
+  s3_key = "test.doc-example.com/lambda_${terraform.workspace}.zip"
+
   source_code_hash = data.archive_file.lambda_function_file.output_base64sha256
 
 environment {
@@ -45,7 +48,7 @@ environment {
 
 
 resource "aws_s3_bucket_notification" "redshift-bucket-notification" {
-  bucket = "suryanshredshiftbucket"
+  bucket = var.bucket_name
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.my_lambda.arn

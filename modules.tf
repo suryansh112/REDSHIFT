@@ -15,4 +15,5 @@ module "lambda" {
     redshift_lambda_access = var.redshift_lambda_access
     env_function_name = var.env_function_name
     cluster_name =  var.cluster_name
+    bucket_name = var.bucket_name
 }
