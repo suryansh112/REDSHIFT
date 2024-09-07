@@ -33,7 +33,7 @@ resource "aws_lambda_function" "my_lambda" {
   s3_bucket = var.bucket_name
   s3_key = "test.doc-example.com/lambda_${terraform.workspace}.zip"
 
-  source_code_hash = data.archive_file.lambda_function_file.output_base64sha256
+  //source_code_hash = data.archive_file.lambda_function_file.output_base64sha256
 
 environment {
   variables = {
