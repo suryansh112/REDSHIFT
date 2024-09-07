@@ -31,7 +31,7 @@ resource "aws_lambda_function" "my_lambda" {
   runtime = "python3.8"
   //filename      = "${var.github_workspace}/lambda/lambda_${terraform.workspace}.zip"
   s3_bucket = var.bucket_name
-  s3_key = "test.doc-example.com/lambda_${terraform.workspace}.zip"
+  s3_key = "lambda_${terraform.workspace}.zip"
 
   //source_code_hash = data.archive_file.lambda_function_file.output_base64sha256
 
