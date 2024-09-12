@@ -46,13 +46,14 @@ jobs:
         aws-region: ${{ inputs.region }}
     - name: Creating workspace
       run: |
+          terraform init
           terraform workspace list > terraform_workspace.txt
           a=`grep -i "${{inputs.environments}}" terraform_workspace.txt`
           echo $a
 
   TERRAFORM_INIT_PLAN_APPLY:
     needs: CREATE_WORKSPACE
-    if: inputs.command == 'apply' && always()
+    if: inputs.command == 'apply'
     runs-on: ubuntu-latest
     steps:
     - name: Clone Repo
