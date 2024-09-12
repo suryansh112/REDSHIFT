@@ -60,7 +60,7 @@ jobs:
 
   TERRAFORM_INIT_PLAN_APPLY:
     needs: CREATE_WORKSPACE
-    if: inputs.command == 'apply'
+    if: inputs.command == 'apply' && always()
     runs-on: ubuntu-latest
     steps:
     - name: Clone Repo
