@@ -10,6 +10,14 @@ on:
         options:
         - apply
         - destroy
+      workspace: 
+        description: Choose whether to apply or destroy
+        required: true
+        default: no
+        type: choice
+        options:
+        - yes
+        - no
       environments:
         description: Choose Env
         required: true
@@ -33,7 +41,23 @@ permissions:
   id-token: write  
   contents: read
 jobs:
+  CREATE_WORKSPACE:
+    runs-on: ubuntu-latest
+    if: inputs.workspace == 'yes'
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@main
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{secrets.ROLE_NAME}} 
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ inputs.region }}
+    - name: Creating workspace
+      run: terraform workspace new ${{inputs.environments}}
+
   TERRAFORM_INIT_PLAN_APPLY:
+    needs: CREATE_WORKSPACE
     if: inputs.command == 'apply'
     runs-on: ubuntu-latest
     steps:
@@ -48,8 +72,8 @@ jobs:
     - name: Creating RedShift Cluster
       run: |
            terraform init    
-           terraform workspace select dev
-           terraform plan -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+           terraform workspace select ${{inputs.environments}}
+           terraform plan -var="role=$ROLE_NAME" -var-file="${{inputs.environments}}-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
 
   TERRAFORM_INIT_APPLY:
     runs-on: ubuntu-latest
@@ -68,9 +92,9 @@ jobs:
     - name: Creating RedShift Cluster
       run: |
            terraform init    
-           terraform workspace select dev
-           terraform plan -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
-           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+           terraform workspace select ${{inputs.environments}}
+           terraform plan -var="role=$ROLE_NAME" -var-file="${{inputs.environments}}-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="${{inputs.environments}}-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
     
     
   TERRAFORM_INIT_PLAN_DESTROY:
@@ -89,8 +113,8 @@ jobs:
       if: inputs.command == 'destroy'
       run: |
            terraform init
-           terraform workspace select dev
-           terraform plan -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+           terraform workspace select ${{inputs.environments}}
+           terraform plan -var="role=$ROLE_NAME" -var-file="${{inputs.environments}}-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
   TERRAFORM_INIT_DESTROY:
     needs: TERRAFORM_INIT_PLAN_DESTROY
     environment:
@@ -109,8 +133,8 @@ jobs:
       if: inputs.command == 'destroy'
       run: |
            terraform init
-           terraform workspace select dev
-           terraform plan -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
-           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="dev-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+           terraform workspace select ${{inputs.environments}}
+           terraform plan -var="role=$ROLE_NAME" -var-file="${{inputs.environments}}-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
+           terraform ${{inputs.command}} --auto-approve -var="role=$ROLE_NAME" -var-file="${{inputs.environments}}-${{ inputs.region }}.tfvars" -var="bucket=${{secrets.bucket_arn}}" -var="github_workspace=${GITHUB_WORKSPACE}" -var="redshift_lambda_access=${{secrets.REDSHIFT_LAMBDA_ACCESS}}" -var="region=${{inputs.region}}"
     
     

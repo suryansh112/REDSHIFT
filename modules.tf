@@ -6,6 +6,7 @@ module "redshift"{
      cluster_type = var.cluster_type
      node_type = var.node_type
      database_name = var.database_name
+     db_secret = var.db_secret
 }
 
 module "lambda" {

@@ -1,8 +1,8 @@
-cluster_name = "dev-redshift-cluster"
-database_name = "dev"
+cluster_name = "qa-redshift-cluster"
+database_name = "qa"
 node_type = "dc2.large"
 cluster_type = "single-node"
 bucket_name = "suryanshredshiftbucket"
 number_of_nodes = 1
-env_function_name = "pause-redshift-dev"
+env_function_name = "pause-redshift-qa"
 db_secret = "db-secret-qa"

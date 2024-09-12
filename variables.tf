@@ -57,4 +57,10 @@ variable "bucket_name" {
     type = string
     sensitive = false
 }
+
+variable "db_secret" {
+
+    type = string
+    sensitive = true
+}
   

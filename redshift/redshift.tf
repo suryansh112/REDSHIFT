@@ -26,7 +26,7 @@ resource "aws_redshift_scheduled_action" "pause_cluster" {
 }
 
 data "aws_secretsmanager_secret_version" "db_secret" {
-  secret_id = "db-secret"
+  secret_id = var.db_secret
 }
 
 locals {

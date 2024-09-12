@@ -27,3 +27,8 @@ variable "cluster_name"{
     sensitive = false
 }
 
+variable "db_secret"{
+    type = string
+    sensitive = true
+}
+
