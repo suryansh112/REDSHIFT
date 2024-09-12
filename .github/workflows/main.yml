@@ -11,7 +11,7 @@ on:
         - apply
         - destroy
       workspace: 
-        description: Choose whether to apply or destroy
+        description: Choose whether to create workspace or not
         required: true
         default: no
         type: choice
