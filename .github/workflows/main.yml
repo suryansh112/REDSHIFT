@@ -48,8 +48,14 @@ jobs:
       run: |
           terraform init
           terraform workspace list > terraform_workspace.txt
+          cat terraform_workspace.txt
           a=`grep -i "${{inputs.environments}}" terraform_workspace.txt`
-          echo $a
+          if [ -z $a ]; then
+          terraform workspace new "${{inputs.environments}}"
+          else 
+          echo "workspace exit"
+          fi
+
 
   TERRAFORM_INIT_PLAN_APPLY:
     needs: CREATE_WORKSPACE
