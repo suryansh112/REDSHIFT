@@ -54,7 +54,9 @@ jobs:
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
         aws-region: ${{ inputs.region }}
     - name: Creating workspace
-      run: terraform workspace new ${{inputs.environments}}
+      run: |
+          terraform init
+          terraform workspace new ${{inputs.environments}}
 
   TERRAFORM_INIT_PLAN_APPLY:
     needs: CREATE_WORKSPACE
