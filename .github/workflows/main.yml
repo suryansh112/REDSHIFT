@@ -46,7 +46,7 @@ jobs:
         aws-region: ${{ inputs.region }}
     - name: Creating workspace
       run: |
-          terraform list > terraform_workspace.txt
+          terraform workspace list > terraform_workspace.txt
           a=`grep -i "${{inputs.environments}}" terraform_workspace.txt`
           echo $a
 
