@@ -10,14 +10,6 @@ on:
         options:
         - apply
         - destroy
-      workspace: 
-        description: Choose whether to create workspace or not
-        required: true
-        default: no
-        type: choice
-        options:
-        - yesCreate
-        - dontCreate
       environments:
         description: Choose Env
         required: true
@@ -43,7 +35,6 @@ permissions:
 jobs:
   CREATE_WORKSPACE:
     runs-on: ubuntu-latest
-    if: inputs.workspace == 'yesCreate'
     steps:
     - name: Clone Repo
       uses: actions/checkout@main
@@ -55,8 +46,9 @@ jobs:
         aws-region: ${{ inputs.region }}
     - name: Creating workspace
       run: |
-          terraform init
-          terraform workspace new ${{inputs.environments}}
+          terraform list > terraform_workspace.txt
+          a=`grep -i "${{inputs.environments}}" terraform_workspace.txt`
+          echo $a
 
   TERRAFORM_INIT_PLAN_APPLY:
     needs: CREATE_WORKSPACE
