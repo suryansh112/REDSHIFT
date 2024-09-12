@@ -16,8 +16,8 @@ on:
         default: no
         type: choice
         options:
-        - yes
-        - no
+        - yesCreate
+        - dontCreate
       environments:
         description: Choose Env
         required: true
@@ -43,7 +43,7 @@ permissions:
 jobs:
   CREATE_WORKSPACE:
     runs-on: ubuntu-latest
-    if: inputs.workspace == 'yes'
+    if: inputs.workspace == 'yesCreate'
     steps:
     - name: Clone Repo
       uses: actions/checkout@main
