@@ -47,15 +47,7 @@ jobs:
     - name: Creating workspace
       run: |
           terraform init
-          terraform workspace list > terraform_workspace.txt
-          cat terraform_workspace.txt
-          a=`grep -i "${{inputs.environments}}" terraform_workspace.txt`
-          if [ -z $a ]; then
-          terraform workspace new "${{inputs.environments}}"
-          else 
-          echo "workspace exit"
-          fi
-
+          terraform workspace list | grep "${{inputs.environments}}" && terrafrom workspace select "${{inputs.environments}}" || terrafrom workspace new qa
 
   TERRAFORM_INIT_PLAN_APPLY:
     needs: CREATE_WORKSPACE
