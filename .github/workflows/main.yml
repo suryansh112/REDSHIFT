@@ -47,7 +47,7 @@ jobs:
     - name: Creating workspace
       run: |
           terraform init
-          terraform workspace list | grep "${{inputs.environments}}" && terrafrom workspace select "${{inputs.environments}}" || terrafrom workspace new qa
+          terraform workspace list | grep ${{inputs.environments}} && terrafrom workspace select ${{inputs.environments}} || terraform workspace new ${{inputs.environments}}
 
   TERRAFORM_INIT_PLAN_APPLY:
     needs: CREATE_WORKSPACE
